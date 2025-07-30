@@ -1,0 +1,33 @@
+name: Windows Build (Artifact)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Ninja
+        uses: aseprite/get-ninja@main
+
+      - name: Build Aseprite
+        shell: bash
+        run: |
+          bash build.sh --auto --norun
+
+      - name: Upload Aseprite.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: aseprite-exe
+          path: build/bin/aseprite.exe
