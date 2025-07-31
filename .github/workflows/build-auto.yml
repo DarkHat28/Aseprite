@@ -1,4 +1,4 @@
-name: build-auto
+name: build-auto Aesprite
 on:
   push:
     paths:
