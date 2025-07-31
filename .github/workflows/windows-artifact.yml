@@ -26,8 +26,18 @@ jobs:
         run: |
           bash build.sh --auto --norun
 
-      - name: Upload Aseprite.exe
+      - name: Download OpenSSL DLLs
+        shell: bash
+        run: |
+          cd build/bin
+          curl -L -o libcrypto-1_1.dll https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/libcrypto-1_1-x64.dll
+          curl -L -o libssl-1_1.dll https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/libssl-1_1-x64.dll
+
+      - name: Upload Aseprite.exe with DLLs
         uses: actions/upload-artifact@v4
         with:
           name: aseprite-exe
-          path: build/bin/aseprite.exe
+          path: |
+            build/bin/aseprite.exe
+            build/bin/libcrypto-1_1.dll
+            build/bin/libssl-1_1.dll
